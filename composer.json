@@ -1,0 +1,27 @@
+{
+	"name": "macfly/yii2-markdown-doc",
+	"description": "Yii2 module to expose identity and rbac through a restful API",
+	"keywords": ["yii2", "markdown", "doc"],
+	"type": "yii2-module",
+	"license": "BSD-3-Clause",
+	"support": {
+		"issues": "https://github.com/Marty-Macfly/yii2-markdown-doc/issues",
+		"source": "https://github.com/Marty-Macfly/yii2-markdown-doc"
+	},
+	"authors": [
+		{
+			"name": "Charles DELFLY",
+			"email": "c.delfly@linkbynet.com"
+		}
+	],
+	"minimum-stability": "stable",
+	"require": {
+		"yiisoft/yii2": "~2.0.5",
+		"kartik-v/yii2-markdown": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"macfly\\yii2\\doc\\": "src/"
+		}
+	}
+}

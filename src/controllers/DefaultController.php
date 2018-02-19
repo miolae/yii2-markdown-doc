@@ -1,8 +1,8 @@
 <?php
 
-namespace macfly\yii2\doc\controllers;
+namespace miolae\yii2\doc\controllers;
 
-use macfly\yii2\doc\Module;
+use miolae\yii2\doc\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -10,7 +10,7 @@ use yii\web\Controller;
 use \yii\web\NotFoundHttpException;
 
 use kartik\markdown\Markdown;
-use macfly\yii2\doc\helpers\FileHelper;
+use miolae\yii2\doc\helpers\FileHelper;
 
 /** @property Module $module */
 class DefaultController extends Controller

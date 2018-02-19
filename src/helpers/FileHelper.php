@@ -7,6 +7,13 @@ use yii\base\InvalidConfigException;
 
 class FileHelper
 {
+    /**
+     * @param $data
+     * @param $saltKey
+     *
+     * @return string
+     * @throws InvalidConfigException
+     */
     public static function getHash($data, $saltKey)
     {
         $hash = hash_hmac(Yii::$app->getSecurity()->macHash, $data, $saltKey, false);
@@ -18,6 +25,14 @@ class FileHelper
         return $hash;
     }
 
+    /**
+     * @param     $dir
+     * @param     $saltKey
+     * @param int $pad
+     *
+     * @return array
+     * @throws InvalidConfigException
+     */
     public static function scanDoc($dir, $saltKey, $pad = 0)
     {
         $list = [];

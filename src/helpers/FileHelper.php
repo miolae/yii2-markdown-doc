@@ -70,6 +70,7 @@ class FileHelper
 
                 if (is_dir($filename)) {
                     $list[$key]['type'] = 'directory';
+                    $list[$key]['filepath'] .= DIRECTORY_SEPARATOR . 'README.md';
                     $list = array_merge($list, self::scanDoc($filename, $saltKey, $pad + 1));
                 }
             }

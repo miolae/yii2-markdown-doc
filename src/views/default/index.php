@@ -18,7 +18,6 @@ foreach ($list as $page => $item) {
     $menuItems[] = [
         'label' => sprintf("%s %s", str_pad('', ArrayHelper::getValue($item, 'pad'), '--'), ArrayHelper::getValue($item, 'name')),
         'url' => ['index', 'page' => $page],
-        'options' => (ArrayHelper::getValue($item, 'type') == 'file') ? [] : ['class' => 'disabled'],
         'active' => ($pageCurrent == $page),
     ];
 }

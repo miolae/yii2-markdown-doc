@@ -44,10 +44,7 @@ class FileHelper
 
                 $filename = $directory . DIRECTORY_SEPARATOR . $entry;
 
-                $code = $entry;
-                if (($pos = strrpos($code, '.')) !== false) {
-                    $code = substr($code, 0, $pos);
-                }
+                $code = self::getEntryCode($entry);
                 if (!$name = self::getEntryName($filename)) {
                     $name = $code;
                 }
@@ -66,6 +63,7 @@ class FileHelper
                     'name' => $name,
                     'filename' => $entry,
                     'filepath' => $filename,
+                    'url' => $key,
                 ];
 
                 if (is_dir($filename)) {
@@ -102,5 +100,19 @@ class FileHelper
         }
 
         return $result;
+    }
+
+    /**
+     * @param $entry
+     *
+     * @return bool|string
+     */
+    public static function getEntryCode($entry)
+    {
+        $code = $entry;
+        if (($pos = strrpos($code, '.')) !== false) {
+            $code = substr($code, 0, $pos);
+        }
+        return $code;
     }
 }

@@ -3,7 +3,12 @@
 use yii\bootstrap\Nav;
 use yii\helpers\ArrayHelper;
 
-/* @var $this yii\web\View */
+/* @var yii\web\View $this  */
+/* @var string $content */
+/* @var string|null $title */
+/* @var string $page */
+/* @var array $list */
+
 $this->title = ($title === null) ? 'Documentation' : $title;
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -13,7 +18,6 @@ foreach ($list as $key => $item) {
     $menuItems[] = [
         'label' => sprintf("%s %s", str_pad('', ArrayHelper::getValue($item, 'pad'), '--'), ArrayHelper::getValue($item, 'name')),
         'url' => ['index' , 'page' => $key],
-        'options' => (ArrayHelper::getValue($item, 'type') == 'file') ? [] : ['class' => 'disabled'],
         'active' => ($page == $key),
     ];
 }

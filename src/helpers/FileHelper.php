@@ -1,6 +1,6 @@
 <?php
 
-namespace macfly\yii2\doc\helpers;
+namespace miolae\yii2\doc\helpers;
 
 use Yii;
 use yii\base\InvalidConfigException;

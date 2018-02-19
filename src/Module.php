@@ -1,8 +1,6 @@
 <?php
 
-namespace macfly\yii2\doc;
-
-use Yii;
+namespace miolae\yii2\doc;
 
 class Module extends \yii\base\Module
 {

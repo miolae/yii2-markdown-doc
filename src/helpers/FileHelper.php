@@ -42,9 +42,9 @@ class FileHelper
                     continue;
                 }
 
-                $file = $dir . DIRECTORY_SEPARATOR . $entry;
-                $key = self::getHash($file, $saltKey);
-                $name = $entry;
+                $filename = $dir . DIRECTORY_SEPARATOR . $entry;
+                $key = self::getHash($filename, $saltKey);
+                $name = self::getEntryName($filename);
 
                 if (($pos = strrpos($entry, '.')) !== false) {
                     $name = substr($entry, 0, $pos);
@@ -55,16 +55,38 @@ class FileHelper
                     'pad' => $pad,
                     'name' => $name,
                     'filename' => $entry,
-                    'filepath' => $file,
+                    'filepath' => $filename,
                 ];
 
-                if (is_dir($file)) {
+                if (is_dir($filename)) {
                     $list[$key]['type'] = 'directory';
-                    $list = array_merge($list, self::scanDoc($file, $saltKey, $pad + 1));
+                    $list = array_merge($list, self::scanDoc($filename, $saltKey, $pad + 1));
                 }
             }
             closedir($handle);
         }
         return $list;
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @return string
+     */
+    protected static function getEntryName($filename)
+    {
+        $result = $filename;
+
+        $resource = fopen($filename, 'r');
+        if ($resource) {
+            $heading = fgets($resource);
+            if (preg_match("/^#([^#]+)$/", $heading, $matches)) {
+                $result = trim($matches[1]);
+            }
+
+            fclose($resource);
+        }
+
+        return $result;
     }
 }

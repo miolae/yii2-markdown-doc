@@ -1,9 +1,11 @@
 {
 	"name": "miolae/yii2-markdown-doc",
 	"description": "Yii2 module to write documentation with MarkDown files",
+	"version" : "2.0.0",
 	"keywords": ["yii2", "markdown", "doc"],
 	"type": "yii2-module",
-	"license": "BSD-3-Clause",
+	"license": "MIT",
+	"homepage": "https://github.com/miolae/yii2-markdown-doc",
 	"support": {
 		"issues": "https://github.com/miolae/yii2-markdown-doc/issues",
 		"source": "https://github.com/miolae/yii2-markdown-doc"
@@ -16,6 +18,7 @@
 	],
 	"minimum-stability": "stable",
 	"require": {
+		"php": ">=5.6",
 		"yiisoft/yii2": "~2.0.5",
 		"kartik-v/yii2-markdown": "*"
 	},

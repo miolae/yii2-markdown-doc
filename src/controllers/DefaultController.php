@@ -31,7 +31,7 @@ class DefaultController extends Controller
             throw new NotFoundHttpException(sprintf("Directory '%s' doesn't exist", $rootDocDir));
         }
 
-        $list = FileHelper::scanDoc('.', $saltKey);
+        $list = FileHelper::scanDoc($rootDocDir, $saltKey);
         $page = ($page === null) ? FileHelper::getHash('./README.md', $saltKey) : $page;
         $content = null;
 

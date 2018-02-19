@@ -22,7 +22,7 @@ class DefaultController extends Controller
      * @throws NotFoundHttpException
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionIndex($page = null)
+    public function actionIndex($page = '')
     {
         $saltKey = $this->module->saltKey;
         $rootDocDir = Yii::getAlias($this->module->rootDocDir);
@@ -32,7 +32,6 @@ class DefaultController extends Controller
         }
 
         $list = FileHelper::scanDoc($rootDocDir, $saltKey);
-        $page = ($page === null) ? FileHelper::getHash('./README.md', $saltKey) : $page;
         $content = null;
 
         if (($item = ArrayHelper::getValue($list, $page, null)) !== null) {
@@ -51,7 +50,7 @@ class DefaultController extends Controller
             'list' => $list,
             'title' => ArrayHelper::getValue($item, 'filename'),
             'content' => $content,
-            'page' => $page,
+            'pageCurrent' => $page,
         ]);
     }
 }

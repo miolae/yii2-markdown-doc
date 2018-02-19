@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 /* @var yii\web\View $this  */
 /* @var string $content */
 /* @var string|null $title */
-/* @var string $page */
+/* @var string $pageCurrent */
 /* @var array $list */
 
 $this->title = ($title === null) ? 'Documentation' : $title;
@@ -14,11 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $menuItems = [];
 
-foreach ($list as $key => $item) {
+foreach ($list as $page => $item) {
     $menuItems[] = [
         'label' => sprintf("%s %s", str_pad('', ArrayHelper::getValue($item, 'pad'), '--'), ArrayHelper::getValue($item, 'name')),
-        'url' => ['index' , 'page' => $key],
-        'active' => ($page == $key),
+        'url' => ['index', 'page' => $page],
+        'options' => (ArrayHelper::getValue($item, 'type') == 'file') ? [] : ['class' => 'disabled'],
+        'active' => ($pageCurrent == $page),
     ];
 }
 

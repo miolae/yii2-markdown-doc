@@ -33,24 +33,32 @@ class FileHelper
      * @return array
      * @throws InvalidConfigException
      */
-    public static function scanDoc($dir, $saltKey, $pad = 0)
+    public static function scanDoc($directory, $saltKey, $pad = 0)
     {
         $list = [];
-        if ($handle = opendir($dir)) {
+        if ($handle = opendir($directory)) {
             while (false !== ($entry = readdir($handle))) {
                 if ($entry === "." || $entry === ".." || $entry === 'README.md') {
                     continue;
                 }
 
-                $filename = $dir . DIRECTORY_SEPARATOR . $entry;
-                $key = self::getHash($filename, $saltKey);
+                $filename = $directory . DIRECTORY_SEPARATOR . $entry;
 
-                if (!$name = self::getEntryName($filename)) {
-                    $name = $entry;
-                    if (($pos = strrpos($name, '.')) !== false) {
-                        $name = substr($name, 0, $pos);
-                    }
+                $code = $entry;
+                if (($pos = strrpos($code, '.')) !== false) {
+                    $code = substr($code, 0, $pos);
                 }
+                if (!$name = self::getEntryName($filename)) {
+                    $name = $code;
+                }
+
+                $arKey = [];
+                $arPath = explode(DIRECTORY_SEPARATOR, $directory);
+                for ($i = 0; $i < $pad; $i++) {
+                    $arKey[] = array_pop($arPath);
+                }
+                $arKey = array_reverse($arKey);
+                $key = implode('/', $arKey) . '/' . $code;
 
                 $list[$key] = [
                     'type' => 'file',

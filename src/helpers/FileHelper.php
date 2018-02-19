@@ -55,7 +55,8 @@ class FileHelper
                     $arKey[] = array_pop($arPath);
                 }
                 $arKey = array_reverse($arKey);
-                $key = implode('/', $arKey) . '/' . $code;
+                $arKey[] = $code;
+                $key = implode('/', $arKey);
 
                 $list[$key] = [
                     'type' => 'file',

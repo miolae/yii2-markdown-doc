@@ -38,16 +38,18 @@ class FileHelper
         $list = [];
         if ($handle = opendir($dir)) {
             while (false !== ($entry = readdir($handle))) {
-                if ($entry == "." || $entry == "..") {
+                if ($entry === "." || $entry === ".." || $entry === 'README.md') {
                     continue;
                 }
 
                 $filename = $dir . DIRECTORY_SEPARATOR . $entry;
                 $key = self::getHash($filename, $saltKey);
-                $name = self::getEntryName($filename);
 
-                if (($pos = strrpos($entry, '.')) !== false) {
-                    $name = substr($entry, 0, $pos);
+                if (!$name = self::getEntryName($filename)) {
+                    $name = $entry;
+                    if (($pos = strrpos($name, '.')) !== false) {
+                        $name = substr($name, 0, $pos);
+                    }
                 }
 
                 $list[$key] = [
@@ -71,14 +73,17 @@ class FileHelper
     /**
      * @param string $filename
      *
-     * @return string
+     * @return false|string
      */
     protected static function getEntryName($filename)
     {
-        $result = $filename;
+        $result = false;
 
-        $resource = fopen($filename, 'r');
-        if ($resource) {
+        if (is_dir($filename)) {
+            $filename .= DIRECTORY_SEPARATOR . 'README.md';
+        }
+
+        if (file_exists($filename) && $resource = fopen($filename, 'r')) {
             $heading = fgets($resource);
             if (preg_match("/^#([^#]+)$/", $heading, $matches)) {
                 $result = trim($matches[1]);

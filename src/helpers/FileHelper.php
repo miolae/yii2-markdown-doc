@@ -36,6 +36,18 @@ class FileHelper
     public static function scanDoc($directory, $saltKey, $pad = 0)
     {
         $list = [];
+
+        if ($pad === 0 && file_exists($directory . DIRECTORY_SEPARATOR . 'README.md')) {
+            $list[''] = [
+                'type' => 'file',
+                'pad' => $pad,
+                'name' => '',
+                'filename' => '',
+                'filepath' => $directory . DIRECTORY_SEPARATOR . 'README.md',
+                'url' => '',
+            ];
+        }
+
         if ($handle = opendir($directory)) {
             while (false !== ($entry = readdir($handle))) {
                 if ($entry === "." || $entry === ".." || $entry === 'README.md') {

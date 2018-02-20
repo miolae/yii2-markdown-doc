@@ -15,11 +15,13 @@ $this->params['breadcrumbs'][] = $this->title;
 $menuItems = [];
 
 foreach ($list as $page => $item) {
-    $menuItems[] = [
-        'label' => sprintf("%s %s", str_pad('', ArrayHelper::getValue($item, 'pad'), '--'), ArrayHelper::getValue($item, 'name')),
-        'url' => ['index', 'page' => $page],
-        'active' => ($pageCurrent == $page),
-    ];
+    if (!empty($page)) {
+        $menuItems[] = [
+            'label' => sprintf("%s %s", str_pad('', ArrayHelper::getValue($item, 'pad'), '--'), ArrayHelper::getValue($item, 'name')),
+            'url' => ['index', 'page' => $page],
+            'active' => ($pageCurrent == $page),
+        ];
+    }
 }
 
 ?>

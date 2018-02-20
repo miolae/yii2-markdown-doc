@@ -6,6 +6,7 @@ use kartik\markdown\Markdown;
 use miolae\yii2\doc\helpers\FileHelper;
 use miolae\yii2\doc\Module;
 use Yii;
+use yii\caching\Cache;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -38,26 +39,7 @@ class DefaultController extends Controller
             $filepath = ArrayHelper::getValue($item, 'filepath');
 
             if (file_exists($filepath)) {
-                $content = file_get_contents($filepath);
-                $content = Markdown::convert($content, [
-                    'markdown' => [
-                        'url_filter_func' => function ($url) use ($item) {
-                            if (Url::isRelative($url)) {
-                                if ($item['type'] === 'directory') {
-                                    $page = $item['url'] . '/' . FileHelper::getEntryCode($url);
-                                } else {
-                                    $page = explode('/', $item['url']);
-                                    $page[count($page) - 1] = FileHelper::getEntryCode($url);
-                                    $page = implode('/', $page);
-                                }
-
-                                return Url::to(['index', 'page' => $page]);
-                            }
-
-                            return $url;
-                        },
-                    ],
-                ]);
+                $content = self::getContent($filepath, $item);
             }
         }
 
@@ -67,5 +49,44 @@ class DefaultController extends Controller
             'content' => $content,
             'pageCurrent' => $page,
         ]);
+    }
+
+    public static function getContent($filepath, $item, $cacheUse = true)
+    {
+        $getContent = function () use ($filepath, $item) {
+            return DefaultController::getContent($filepath, $item, false);
+        };
+
+        /** @var false|Cache $cache */
+        if ($cacheUse && $cache = Yii::$app->get('cache')) {
+            $cacheKey = "miolae-markdown-doc:$filepath";
+            $dependency = new \yii\caching\FileDependency(['fileName' => $filepath]);
+
+            return $cache->getOrSet($cacheKey, $getContent, null, $dependency);
+        } else {
+            $content = file_get_contents($filepath);
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $content = Markdown::convert($content, [
+                'markdown' => [
+                    'url_filter_func' => function ($url) use ($item) {
+                        if (Url::isRelative($url)) {
+                            if ($item['type'] === 'directory') {
+                                $page = $item['url'] . '/' . FileHelper::getEntryCode($url);
+                            } else {
+                                $page = explode('/', $item['url']);
+                                $page[count($page) - 1] = FileHelper::getEntryCode($url);
+                                $page = implode('/', $page);
+                            }
+
+                            return Url::to(['index', 'page' => $page]);
+                        }
+
+                        return $url;
+                    },
+                ],
+            ]);
+
+            return $content;
+        }
     }
 }

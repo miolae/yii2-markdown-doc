@@ -10,21 +10,19 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist "miolae/yii2-markdown-doc" "*"
+php composer.phar require --prefer-dist "miolae/yii2-markdown-doc" "2"
 ```
 
 or add
 
 ```
-"miolae/yii2-markdown-doc": "*"
+"miolae/yii2-markdown-doc": "2"
 ```
 
 to the require section of your `composer.json` file.
 
 Configure
 ------------
-
-> **NOTE:** Make sure that you have [`markdown`](https://github.com/kartik-v/yii2-markdown) module in your config files.
 
 Configure **config/web.php** as follows
 
@@ -34,11 +32,7 @@ Configure **config/web.php** as follows
     'doc'  => [
         'class' => 'miolae\yii2\doc\Module',
         'rootDocDir' => '@app/docs', // Directory to list
-        'saltKey' => '', // Key use to encrypt file name
-    ],
-    'markdown' => [
-        'class' => 'kartik\markdown\Module',
-    ],
+    ]
     ................
 ],
 ```

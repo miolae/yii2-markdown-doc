@@ -2,38 +2,18 @@
 
 namespace miolae\yii2\doc\helpers;
 
-use Yii;
 use yii\base\InvalidConfigException;
 
 class FileHelper
 {
     /**
-     * @param $data
-     * @param $saltKey
-     *
-     * @return string
-     * @throws InvalidConfigException
-     */
-    public static function getHash($data, $saltKey)
-    {
-        $hash = hash_hmac(Yii::$app->getSecurity()->macHash, $data, $saltKey, false);
-
-        if (!$hash) {
-            throw new InvalidConfigException('Failed to generate HMAC with hash algorithm: ' . Yii::$app->getSecurity()->macHash);
-        }
-
-        return $hash;
-    }
-
-    /**
-     * @param     $dir
-     * @param     $saltKey
-     * @param int $pad
+     * @param string $dir
+     * @param int    $pad
      *
      * @return array
      * @throws InvalidConfigException
      */
-    public static function scanDoc($directory, $saltKey, $pad = 0)
+    public static function scanDoc($directory, $pad = 0)
     {
         $list = [];
 
@@ -82,7 +62,7 @@ class FileHelper
                 if (is_dir($filename)) {
                     $list[$key]['type'] = 'directory';
                     $list[$key]['filepath'] .= DIRECTORY_SEPARATOR . 'README.md';
-                    $list = array_merge($list, self::scanDoc($filename, $saltKey, $pad + 1));
+                    $list = array_merge($list, self::scanDoc($filename, $pad + 1));
                 }
             }
             closedir($handle);

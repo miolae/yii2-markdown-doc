@@ -24,14 +24,13 @@ class DefaultController extends Controller
      */
     public function actionIndex($page = '')
     {
-        $saltKey = $this->module->saltKey;
         $rootDocDir = Yii::getAlias($this->module->rootDocDir);
 
         if (!chdir($rootDocDir)) {
             throw new NotFoundHttpException(sprintf("Directory '%s' doesn't exist", $rootDocDir));
         }
 
-        $list = FileHelper::scanDoc($rootDocDir, $saltKey);
+        $list = FileHelper::scanDoc($rootDocDir);
         $content = null;
 
         if (($item = ArrayHelper::getValue($list, $page, null)) !== null) {

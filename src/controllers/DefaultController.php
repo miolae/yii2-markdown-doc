@@ -4,6 +4,7 @@ namespace miolae\yii2\doc\controllers;
 
 use kartik\markdown\Markdown;
 use miolae\yii2\doc\helpers\FileHelper;
+use miolae\yii2\doc\helpers\SearchHelper;
 use miolae\yii2\doc\Module;
 use Yii;
 use yii\caching\Cache;
@@ -16,11 +17,14 @@ use yii\web\NotFoundHttpException;
 class DefaultController extends Controller
 {
     /**
-     * @param string|null $page
+     * @param string $page
      *
      * @return string
      * @throws NotFoundHttpException
+     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\StaleObjectException
      */
     public function actionIndex($page = '')
     {
@@ -32,6 +36,10 @@ class DefaultController extends Controller
 
         $list = FileHelper::scanDoc($rootDocDir);
         $content = null;
+
+        if ($this->module->search) {
+            SearchHelper::index($list);
+        }
 
         if (($item = ArrayHelper::getValue($list, $page, null)) !== null) {
             Yii::info("File to load: " . ArrayHelper::getValue($item, 'filename'));

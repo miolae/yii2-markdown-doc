@@ -17,14 +17,16 @@ class FileHelper
     {
         $list = [];
 
-        if ($pad === 0 && file_exists($directory . DIRECTORY_SEPARATOR . 'README.md')) {
+        $filename = $directory . DIRECTORY_SEPARATOR . 'README.md';
+        if ($pad === 0 && file_exists($filename)) {
             $list[''] = [
                 'type' => 'file',
                 'pad' => $pad,
                 'name' => '',
                 'filename' => '',
-                'filepath' => $directory . DIRECTORY_SEPARATOR . 'README.md',
+                'filepath' => $filename,
                 'url' => '',
+                'timestamp' => filemtime($filename),
             ];
         }
 
@@ -64,6 +66,7 @@ class FileHelper
                     $list[$key]['filepath'] .= DIRECTORY_SEPARATOR . 'README.md';
                     $list = array_merge($list, self::scanDoc($filename, $pad + 1));
                 }
+                $list[$key]['timestamp'] = filemtime($list[$key]['filepath']);
             }
             closedir($handle);
         }
@@ -75,7 +78,7 @@ class FileHelper
      *
      * @return false|string
      */
-    protected static function getEntryName($filename)
+    public static function getEntryName($filename)
     {
         $result = false;
 

@@ -114,4 +114,60 @@ class FileHelper
 
         return $code;
     }
+
+    public static function getEntryUrl($entry)
+    {
+        $url = self::getEntryCode($entry);
+
+        $dots = [];
+        $parts = explode('/', $url);
+        foreach ($parts as $key => $item) {
+            if ($item === '..') {
+                if (isset($dots[$key - 1])) {
+                    $key--;
+                }
+
+                $dots[$key]++;
+            }
+        }
+
+        $dotsNew = [];
+        $sum = 0;
+
+        foreach ($dots as $key => $count) {
+            $key = $key - $sum;
+            if ($key > 0) {
+                $dotsNew[$key] = $count;
+            }
+            $sum += $count;
+        }
+        $dots = $dotsNew;
+
+        $parts = array_values(array_filter($parts, function($item) {return $item !== '..';}));
+        while (!empty($dots)) {
+            $partsNew = [];
+            $key = key($dots);
+            $shift = current($dots);
+            unset($dots[$key]);
+
+            foreach ($parts as $index => $part) {
+                if ($index < $key - $shift) {
+                    $partsNew[$index] = $part;
+                } elseif ($index >= $key) {
+                    $partsNew[$index - $shift] = $part;
+                }
+            }
+
+            $parts = $partsNew;
+
+            $dotsNew = [];
+            foreach ($dots as $key => $count) {
+                $key = $key - $shift;
+                $dotsNew[$key] = $count;
+            }
+            $dots = $dotsNew;
+        }
+
+        return implode('/', $parts);
+    }
 }

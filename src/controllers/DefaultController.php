@@ -69,13 +69,8 @@ class DefaultController extends Controller
                 'markdown' => [
                     'url_filter_func' => function ($url) use ($item) {
                         if (Url::isRelative($url)) {
-                            if ($item['type'] === 'directory') {
-                                $page = $item['url'] . '/' . FileHelper::getEntryCode($url);
-                            } else {
-                                $page = explode('/', $item['url']);
-                                $page[count($page) - 1] = FileHelper::getEntryCode($url);
-                                $page = implode('/', $page);
-                            }
+                            $page = implode('/', [trim($item['url'], '/'), trim($url, '/')]);
+                            $page = FileHelper::getEntryUrl($page);
 
                             return Url::to(['index', 'page' => $page]);
                         }

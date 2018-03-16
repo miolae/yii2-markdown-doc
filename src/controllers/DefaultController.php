@@ -38,7 +38,7 @@ class DefaultController extends Controller
             $filepath = ArrayHelper::getValue($item, 'filepath');
 
             if (file_exists($filepath)) {
-                $content = self::getContent($filepath, $item);
+                $content = self::getContent($filepath, $item, $this->module->cache);
             }
         }
 

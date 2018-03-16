@@ -31,7 +31,10 @@ Configure **config/web.php** as follows
     ................
     'doc'  => [
         'class' => 'miolae\yii2\doc\Module',
-        'rootDocDir' => '@app/docs', // Directory to list
+        // Directory to list
+        'rootDocDir' => '@app/docs',
+        // set false if you don't want to cache generated html, usefull for debugging 
+        'cache' => true,
     ]
     ................
 ],

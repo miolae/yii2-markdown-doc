@@ -103,9 +103,15 @@ class FileHelper
     public static function getEntryCode($entry)
     {
         $code = $entry;
-        if (($pos = strrpos($code, '.')) !== false) {
+        if (($pos = strrpos($code, 'README.md')) === false) {
+            $pos = strrpos($code, '.');
+        }
+
+        if ($pos !== false) {
             $code = substr($code, 0, $pos);
         }
+        $code = rtrim($code, '/');
+
         return $code;
     }
 }

@@ -22,6 +22,10 @@
 		"yiisoft/yii2": "~2.0.11",
 		"kartik-v/yii2-markdown": "*"
 	},
+	"require-dev": {
+		"roave/security-advisories": "dev-master",
+		"squizlabs/php_codesniffer": "*"
+	},
 	"autoload": {
 		"psr-4": {
 			"miolae\\yii2\\doc\\": "src/"

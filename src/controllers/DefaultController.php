@@ -38,7 +38,7 @@ class DefaultController extends Controller
             $filepath = ArrayHelper::getValue($item, 'filepath');
 
             if (file_exists($filepath)) {
-                $content = self::getContent($filepath, $item, $this->module->cache);
+                $content = $this->getContent($filepath, $item, $this->module->cache);
             }
         }
 
@@ -50,10 +50,19 @@ class DefaultController extends Controller
         ]);
     }
 
-    public static function getContent($filepath, $item, $cacheUse = true)
+    /**
+     * @param string $filepath path for md file
+     * @param array $item An item from FileHelper
+     * @param bool $cacheUse
+     * @return bool|mixed|string
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getContent($filepath, $item, $cacheUse = true)
     {
-        $getContent = function () use ($filepath, $item) {
-            return DefaultController::getContent($filepath, $item, false);
+        $controller = $this;
+
+        $getContent = function () use ($controller, $filepath, $item) {
+            return $controller->getContent($filepath, $item, false);
         };
 
         /** @var false|Cache $cache */
@@ -65,15 +74,19 @@ class DefaultController extends Controller
         }
 
         $content = file_get_contents($filepath);
-        /** @noinspection PhpUnhandledExceptionInspection */
         $content = Markdown::convert($content, [
             'markdown' => [
-                'url_filter_func' => function ($url) use ($item) {
+                'url_filter_func' => function ($url) use ($item, $controller) {
                     if (Url::isRelative($url)) {
                         $page = implode('/', [trim($item['url'], '/'), trim($url, '/')]);
                         $page = FileHelper::getEntryUrl($page);
 
-                        return Url::to(['index', 'page' => $page]);
+                        if (FileHelper::isMenuItem($page)) {
+                            $url = Url::to(['index', 'page' => $page]);
+                            $url = str_replace(urlencode('/'), '/', $url);
+                        } else {
+                            $url = $controller->module->imageAsset->baseUrl . '/' . $page;
+                        }
                     }
 
                     return $url;

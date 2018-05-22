@@ -1,5 +1,6 @@
 <?php
 
+use miolae\yii2\doc\assets\ImageAsset;
 use yii\bootstrap\Nav;
 use yii\helpers\ArrayHelper;
 
@@ -9,6 +10,7 @@ use yii\helpers\ArrayHelper;
 /* @var string $pageCurrent */
 /* @var array $list */
 
+ImageAsset::register($this);
 $this->title = ($title === null) ? 'Documentation' : $title;
 $this->params['breadcrumbs'][] = $this->title;
 

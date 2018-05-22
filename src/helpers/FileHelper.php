@@ -32,8 +32,8 @@ class FileHelper
             while (false !== ($entry = readdir($handle))) {
                 $isDotDir = $entry === '.' || $entry === '..';
                 $isReadme = $entry === 'README.md';
-                $isntMd = strpos($entry, '.') !== false && stripos($entry, '.md') !== strlen($entry) - 3;
-                if ($isDotDir || $isReadme || $isntMd) {
+                $isntMenu = !self::isMenuItem($entry);
+                if ($isDotDir || $isReadme || $isntMenu) {
                     continue;
                 }
 
@@ -70,6 +70,7 @@ class FileHelper
             }
             closedir($handle);
         }
+
         return $list;
     }
 
@@ -107,7 +108,7 @@ class FileHelper
     {
         $code = $entry;
         if (($pos = strrpos($code, 'README.md')) === false) {
-            $pos = strrpos($code, '.');
+            $pos = strrpos($code, '.md');
         }
 
         if ($pos !== false) {
@@ -172,5 +173,10 @@ class FileHelper
         }
 
         return implode('/', $parts);
+    }
+
+    public static function isMenuItem($entry)
+    {
+        return strpos($entry, '.') === false || stripos($entry, '.md') === strlen($entry) - 3;
     }
 }

@@ -62,25 +62,25 @@ class DefaultController extends Controller
             $dependency = new \yii\caching\FileDependency(['fileName' => $filepath]);
 
             return $cache->getOrSet($cacheKey, $getContent, null, $dependency);
-        } else {
-            $content = file_get_contents($filepath);
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $content = Markdown::convert($content, [
-                'markdown' => [
-                    'url_filter_func' => function ($url) use ($item) {
-                        if (Url::isRelative($url)) {
-                            $page = implode('/', [trim($item['url'], '/'), trim($url, '/')]);
-                            $page = FileHelper::getEntryUrl($page);
-
-                            return Url::to(['index', 'page' => $page]);
-                        }
-
-                        return $url;
-                    },
-                ],
-            ]);
-
-            return $content;
         }
+
+        $content = file_get_contents($filepath);
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $content = Markdown::convert($content, [
+            'markdown' => [
+                'url_filter_func' => function ($url) use ($item) {
+                    if (Url::isRelative($url)) {
+                        $page = implode('/', [trim($item['url'], '/'), trim($url, '/')]);
+                        $page = FileHelper::getEntryUrl($page);
+
+                        return Url::to(['index', 'page' => $page]);
+                    }
+
+                    return $url;
+                },
+            ],
+        ]);
+
+        return $content;
     }
 }

@@ -30,7 +30,10 @@ class FileHelper
 
         if ($handle = opendir($directory)) {
             while (false !== ($entry = readdir($handle))) {
-                if ($entry === "." || $entry === ".." || $entry === 'README.md') {
+                $isDotDir = $entry === '.' || $entry === '..';
+                $isReadme = $entry === 'README.md';
+                $isntMd = strpos($entry, '.') !== false && stripos($entry, '.md') !== strlen($entry) - 3;
+                if ($isDotDir || $isReadme || $isntMd) {
                     continue;
                 }
 

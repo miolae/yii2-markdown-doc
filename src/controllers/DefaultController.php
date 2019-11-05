@@ -42,9 +42,11 @@ class DefaultController extends Controller
             }
         }
 
+        $title = $this->getPageTitle($item);
+
         return $this->render('index', [
             'list' => $list,
-            'title' => ArrayHelper::getValue($item, 'filename'),
+            'title' => $title,
             'content' => $content,
             'pageCurrent' => $page,
         ]);
@@ -102,4 +104,19 @@ class DefaultController extends Controller
 
         return $content;
     }
+
+    /**
+     * @param $item
+     *
+     * @return string
+     */
+    protected function getPageTitle($item)
+    {
+        $title = empty($item['name']) ? $item['filename'] : $item['name'];
+        $prefix = $this->module->getTitlePrefix();
+        if (strlen($title) > 0) {
+            $title = trim($prefix) . ' ' . $title;
+        }
+        return $title;
+}
 }

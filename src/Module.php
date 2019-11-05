@@ -10,9 +10,24 @@ use yii\web\AssetManager;
  */
 class Module extends \yii\base\Module
 {
+    /**
+     * @var string
+     */
     public $rootDocDir = '@app/docs';
+
+    /**
+     * @var bool
+     */
     public $cache = true;
-    /** @var ImageAsset */
+
+    /**
+     * @var string
+     */
+    public $titlePrefix;
+
+    /**
+     * @var ImageAsset
+     */
     private $imageAsset;
 
     public function init()
@@ -37,5 +52,13 @@ class Module extends \yii\base\Module
         }
 
         return $this->imageAsset;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitlePrefix()
+    {
+        return $this->titlePrefix;
     }
 }

@@ -78,7 +78,13 @@ class DefaultController extends Controller
             'markdown' => [
                 'url_filter_func' => function ($url) use ($item, $controller) {
                     if (Url::isRelative($url)) {
-                        $page = implode('/', [trim($item['url'], '/'), trim($url, '/')]);
+                        $pageUrl = explode('/', $item['url']);
+                        if (strpos($url, '/') !== 0 && count($pageUrl) > 0) {
+                            array_pop($pageUrl);
+                        }
+                        $pageUrl[] = trim($url, '/');
+
+                        $page = implode('/', $pageUrl);
                         $page = FileHelper::getEntryUrl($page);
 
                         if (FileHelper::isMenuItem($page)) {

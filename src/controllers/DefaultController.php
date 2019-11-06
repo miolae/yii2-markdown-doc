@@ -81,7 +81,7 @@ class DefaultController extends Controller
                 'url_filter_func' => function ($url) use ($item, $controller) {
                     if (Url::isRelative($url)) {
                         $pageUrl = explode('/', $item['url']);
-                        if (strpos($url, '/') !== 0 && count($pageUrl) > 0) {
+                        if ($item['type'] !== 'directory' && strpos($url, '/') !== 0 && count($pageUrl) > 0) {
                             array_pop($pageUrl);
                         }
                         $pageUrl[] = trim($url, '/');
@@ -112,11 +112,14 @@ class DefaultController extends Controller
      */
     protected function getPageTitle($item)
     {
-        $title = empty($item['name']) ? $item['filename'] : $item['name'];
-        $prefix = $this->module->getTitlePrefix();
-        if (strlen($title) > 0) {
-            $title = trim($prefix) . ' ' . $title;
+        $title = '';
+        if (is_array($item)) {
+            $title = empty($item['name']) ? $item['filename'] : $item['name'];
         }
+
+        $prefix = $this->module->getTitlePrefix();
+        $title = trim($prefix) . ' ' . $title;
+
         return $title;
-}
+    }
 }

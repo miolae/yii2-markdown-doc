@@ -1,7 +1,7 @@
 {
 	"name": "miolae/yii2-markdown-doc",
 	"description": "Yii2 module to write documentation with MarkDown files",
-	"version" : "2.0.5",
+	"version" : "2.0.6",
 	"keywords": ["yii2", "markdown", "doc"],
 	"type": "yii2-module",
 	"license": "MIT",

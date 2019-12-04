@@ -127,6 +127,10 @@ class FileHelper
         $parts = explode('/', $url);
         foreach ($parts as $key => $item) {
             if ($item === '..') {
+                if (!isset($dots[$key])) {
+                    $dots[$key] = 0;
+                }
+
                 if (isset($dots[$key - 1])) {
                     $key--;
                 }
